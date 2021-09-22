@@ -1,46 +1,115 @@
 <div class="container">
   <div class="container-fluid">
-    <table class="table">
-      <tr>
+    <button class="btn btn-primary" data-toggle="modal" data-target="#createModal">Create</button>
+    <table class="table table-primary">
+      <tr class="table table-dark">
         <th>ID</th>
         <th>Name</th>
         <th>Price</th>
         <th>Quantity</th>
+        <th>Status</th>
         <th>Delete</th>
       </tr>
-      <tr *ngFor="let product of list">
+      <tr *ngFor="let product of list" class="table table-active">
         <td>{{product.id}}</td>
         <td>{{product.name}}</td>
         <td>{{product.price}}</td>
         <td>{{product.quantity}}</td>
         <td>
-          <button (click)="delete(product.id)" >Delete</button>
+          <div *ngIf="product.status === true">Available</div>
+          <div *ngIf="product.status === false">Not Available</div>
+        </td>
+        <td>
+          <button (click)="getedit(product.id)" class="btn btn-warning" data-toggle="modal"
+                  data-target="#editModal">Edit
+          </button>
+          <button (click)="delete(product.id)" class="btn btn-danger">Delete</button>
         </td>
       </tr>
     </table>
   </div>
-</div>
-<div class="container">
-  <div class="container-fluid">
-    <table>
-      <tr>
-        <td>ID</td>
-        <td><input type="number" [(ngModel)]="id"></td>
-      </tr>
-      <tr>
-        <td>name</td>
-        <td><input type="text" [(ngModel)]="name"></td>
-      </tr>
-      <tr>
-        <td>price</td>
-        <td><input type="number" [(ngModel)]="price"></td>
-      </tr>
-      <tr>
-        <td>quantity</td>
-        <td><input type="number" [(ngModel)]="quantity"></td>
-      </tr>
-    </table>
+  <div class="modal" id="createModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Create Product</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+          <table>
+            <tr>
+              <td>name</td>
+              <td><input type="text" [(ngModel)]="name"></td>
+            </tr>
+            <tr>
+              <td>price</td>
+              <td><input type="number" [(ngModel)]="price"></td>
+            </tr>
+            <tr>
+              <td>quantity</td>
+              <td><input type="number" [(ngModel)]="quantity"></td>
+            </tr>
+            <tr>
+              <td>status</td>
+              <td><select [(ngModel)]="status">
+                <option [ngValue]="true">Avail</option>
+                <option [ngValue]="false">Not Avail</option>
+              </select>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" (click)="create()" class="btn btn-success" data-dismiss="modal">Create</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
   </div>
-  <button (click)="create(id,name,price,quantity)" class="btn btn-primary">Create</button>
-  <button (click)="edit(id,name,price,quantity)" class="btn btn-warning">Edit</button>
+  <div class="modal" id="editModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Edit Product</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <table>
+            <input type="hidden" [(ngModel)]="tempid">
+            <tr>
+              <td>name</td>
+              <td><input type="text" [(ngModel)]="name"></td>
+            </tr>
+            <tr>
+              <td>price</td>
+              <td><input type="number" [(ngModel)]="price"></td>
+            </tr>
+            <tr>
+              <td>quantity</td>
+              <td><input type="number" [(ngModel)]="quantity"></td>
+            </tr>
+            <tr>
+              <td>status</td>
+              <td>
+                <select [(ngModel)]="status">
+                  <option [ngValue]="true">Avail</option>
+                  <option [ngValue]="false">Not Avail</option>
+                </select>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" (click)="edit(tempid)" class="btn btn-success" data-dismiss="modal">Edit</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

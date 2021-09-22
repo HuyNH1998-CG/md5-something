@@ -7,22 +7,26 @@ import {Product} from "../../product";
   styleUrls: ['./product.component.css']
 })
 export class ProductComponent implements OnInit {
-  id!: number;
+  id:number = 2;
   name!: string;
   price!: number;
   quantity!: number;
+  status!: boolean;
+  tempid!: number;
 
   list: Product[] = [{
     id: 1,
     name: 'gun',
     price: 5000,
     quantity: 100,
+    status: true
   },
     {
       id: 2,
       name: 'fruit',
       price: 100,
       quantity: 10000,
+      status: true
     }
   ]
 
@@ -32,19 +36,53 @@ export class ProductComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  create(id: number, name: string, price: number, quantity: number) {
-    this.list.push({id, name, price, quantity})
+  create() {
+    this.list.push({
+      id: ++this.id,
+      name: this.name,
+      price: this.price,
+      quantity: this.quantity,
+      status: this.status
+    });
+    console.log(this.list)
+    this.name = '';
+    this.price = 0;
+    this.quantity = 0;
   }
 
-  edit(id: number, name: string, price: number, quantity: number) {
+  getedit(id: number) {
     for (let i = 0; i < this.list.length; i++) {
       if (this.list[i].id === id) {
-        this.list[i] = {id,name,price,quantity}
+        this.tempid = id;
+        this.name = this.list[i].name;
+        this.price = this.list[i].price;
+        this.quantity = this.list[i].quantity;
+        this.status = this.list[i].status;
+        return
       }
     }
   }
 
-  delete(id: any){
+  edit(id: number) {
+    for (let i = 0; i < this.list.length; i++) {
+      if(this.list[i].id === id){
+        this.list[i] = {
+          id: this.tempid,
+          name: this.name,
+          price: this.price,
+          quantity: this.quantity,
+          status: this.status
+        };
+      }
+    }
+    this.name = '';
+    this.price = 0;
+    this.quantity = 0;
+    this.status = false;
+    return
+  }
+
+  delete(id: any) {
     this.list = this.list.filter(product => {
       return product.id !== id;
     })
